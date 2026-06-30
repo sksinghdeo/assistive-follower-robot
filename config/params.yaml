@@ -1,0 +1,30 @@
+gap_follower:
+  ros__parameters:
+    scan_topic: "/rpi_11/scan"
+    cmd_vel_topic: "/rpi_11/cmd_vel"
+    heading_topic: "/rpi_11/person_heading_deg"
+    field_of_view_deg: 80.0
+    smoothing_window: 10
+    range_threshold_m: 1.0
+    max_range_m: 6.0
+    bubble_radius: 10
+    max_linear_speed: 0.50
+    min_linear_speed: 0.10
+    angular_gain: 1.0
+    heading_weight: 0.65
+    emergency_stop_distance_m: 0.35
+
+vision_angle:
+  ros__parameters:
+    image_topic: "/color/preview/image"
+    heading_topic: "/rpi_11/person_heading_deg"
+    model_path: "models/shoe_model.pth"
+    max_distance_mm: 2000.0
+    publish_debug_image: false
+
+sim_heading:
+  ros__parameters:
+    heading_topic: "/rpi_11/person_heading_deg"
+    publish_rate_hz: 5.0
+    amplitude_deg: 20.0
+    period_s: 8.0

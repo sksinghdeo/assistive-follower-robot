@@ -1,0 +1,16 @@
+[
+  {
+    "archive": "Scene1_data.zip",
+    "file_count": 232,
+    "image_count": 232,
+    "uncompressed_bytes": 338158978,
+    "compressed_bytes": 337409071
+  },
+  {
+    "archive": "scene2-dataset.zip",
+    "file_count": 232,
+    "image_count": 232,
+    "uncompressed_bytes": 494666251,
+    "compressed_bytes": 494576429
+  }
+]
