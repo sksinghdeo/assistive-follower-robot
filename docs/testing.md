@@ -8,7 +8,19 @@
 4. Verify `/rpi_11/cmd_vel` output is safe before enabling motor motion.
 5. Run the full stack with `vision_angle` after confirming the model path and camera topic.
 
-## Commands
+## Test mode
+
+```bash
+ros2 launch assistive_follower_robot follower.launch.py use_sim_heading:=true use_vision:=false
+```
+
+## Full stack mode
+
+```bash
+ros2 launch assistive_follower_robot follower.launch.py use_sim_heading:=false use_vision:=true
+```
+
+## Topic checks
 
 ```bash
 ros2 topic echo /rpi_11/scan
@@ -16,6 +28,12 @@ ros2 topic echo /rpi_11/person_heading_deg
 ros2 topic echo /rpi_11/cmd_vel
 ```
 
+## Interface snapshot
+
+<p align="center">
+  <img src="../images/turtlebot_interface_lidar_active.png" width="850" alt="TurtleBot interface with active LiDAR view">
+</p>
+
 ## Safety note
 
-This is a prototype follower stack. Use a low-speed test environment, keep emergency stop access available, and verify command output before running near people.
+This is a prototype follower stack. Use a low-speed test environment, keep emergency-stop access available, and verify command output before running near people.

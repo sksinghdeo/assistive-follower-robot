@@ -2,7 +2,7 @@
 
 # Assistive Follower Robot
 
-### ROS 2 mobile robot follower using OAK-D vision, learned shoe localization, and LiDAR gap navigation
+### ROS 2 follower robot using OAK-D shoe localization, PyTorch vision, and LiDAR gap navigation
 
 Robotics · ROS 2 · TurtleBot4 · OAK-D · LiDAR · PyTorch · Computer Vision · Assistive Robotics
 
@@ -10,67 +10,104 @@ Robotics · ROS 2 · TurtleBot4 · OAK-D · LiDAR · PyTorch · Computer Vision 
 
 ---
 
+<p align="center">
+  <img src="images/turtlebot_interface_lidar_active.png" width="950" alt="TurtleBot interface showing live camera feed, LiDAR map, and motion control layout">
+</p>
+
 ## Overview
 
-This repository is a polished portfolio version of an assistive follower robot project. The system combines a robot-mounted **OAK-D camera**, a **ResNet18-style shoe localization model**, **LiDAR follow-the-gap navigation**, and **ROS 2 topic integration** to move a TurtleBot-style robot toward a user cue while avoiding obstacles.
+This repository is the polished portfolio version of an assistive follower robot project. The system combines:
 
-> Hardware-dependent prototype: the navigation node can be tested with simulated heading input, but full functionality requires a robot, LiDAR scan topic, camera image topic, and trained model weights.
+- **OAK-D camera perception** to localize a user cue/shoe in the camera frame
+- **PyTorch ResNet18-style regression** to estimate target pose from images
+- **LiDAR follow-the-gap navigation** for reactive obstacle avoidance
+- **ROS 2 nodes** that connect perception, heading estimation, and velocity control
+
+> Hardware-dependent prototype: the navigation node can be tested with simulated heading input, but the full stack requires a TurtleBot-style robot, LiDAR scan topic, OAK-D camera image topic, and trained model weights.
 
 ---
 
 ## System at a Glance
 
-<p align="center">
-  <img src="images/hardware_system_layout.png" width="850" alt="TurtleBot, ROS 2 workstation, Raspberry Pi, camera, LiDAR, and shoe target layout">
-</p>
+<table>
+<tr>
+<td width="50%" align="center"><b>Physical / hardware layout</b></td>
+<td width="50%" align="center"><b>ROS 2 software architecture</b></td>
+</tr>
+<tr>
+<td><img src="images/hardware_system_layout.png" alt="TurtleBot, ROS 2 workstation, Raspberry Pi, camera, LiDAR, and shoe target layout"></td>
+<td><img src="images/system_architecture.svg" alt="Assistive follower robot software architecture"></td>
+</tr>
+</table>
 
-<p align="center">
-  <img src="images/system_architecture.svg" width="900" alt="Assistive follower robot system architecture">
-</p>
-
-The robot uses camera input to estimate the user's relative heading, LiDAR to identify safe free-space gaps, and a control node to publish velocity commands.
+The robot uses camera input to estimate the user heading, LiDAR to identify safe free-space gaps, and a control node to publish velocity commands.
 
 ---
 
-## What This Project Shows
+## What This Project Demonstrates
 
-| Area | Evidence |
+| Area | Evidence in this repo |
 |---|---|
-| ROS 2 integration | Separate perception, heading, and navigation nodes connected through clear topics |
-| Robotics navigation | LiDAR preprocessing, obstacle bubble masking, free-space gap selection, and velocity control |
-| Computer vision | OAK-D image stream, trained ResNet18-style inference, and target angle estimation |
-| ML workflow | LabelMe annotation, normalized regression labels, PyTorch training, model card, and dataset card |
-| Hardware awareness | TurtleBot/OAK-D/LiDAR deployment assumptions, launch/config files, and safety notes |
-| Portfolio quality | Clean README, docs, diagrams, sample images, model weights, and reproducible tooling |
+| **ROS 2 integration** | Separate perception, simulated heading, and navigation nodes connected through explicit topics |
+| **Robotics navigation** | LiDAR preprocessing, obstacle bubble masking, free-space gap selection, and velocity control |
+| **Computer vision** | OAK-D image pipeline, shoe localization, and model-based heading estimation |
+| **ML workflow** | LabelMe annotation, normalized labels, PyTorch training script, dataset card, and model card |
+| **Hardware awareness** | TurtleBot/OAK-D/LiDAR assumptions, launch files, parameters, and safety notes |
+| **Portfolio quality** | Clean docs, images, model notes, sample dataset, source references, and reproducible tooling |
 
 ---
 
-## Dataset and Vision Model
+## Perception and Dataset Pipeline
 
-The shoe localization pipeline predicts four regression outputs:
+<table>
+<tr>
+<td width="50%" align="center"><b>OAK-D field-of-view mapping</b></td>
+<td width="50%" align="center"><b>Data collection grid</b></td>
+</tr>
+<tr>
+<td><img src="images/oakd_field_of_view_mapping.png" alt="OAK-D field of view mapping with physical distances"></td>
+<td><img src="images/data_collection_grid.png" alt="Mapped floor grid used for shoe data collection"></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="50%" align="center"><b>Pose diversity</b></td>
+<td width="50%" align="center"><b>Distance variation</b></td>
+</tr>
+<tr>
+<td><img src="images/pose_diversity_dataset.png" alt="Shoe pose diversity in the training dataset"></td>
+<td><img src="images/distance_variation_labels.png" alt="Distance-based shoe labeling examples"></td>
+</tr>
+</table>
+
+The vision pipeline predicts four regression outputs:
 
 ```text
 [x_offset_norm, z_distance_norm, sin(theta), cos(theta)]
 ```
 
-The included dataset material contains:
+<table>
+<tr>
+<td width="50%" align="center"><b>Label convention</b></td>
+<td width="50%" align="center"><b>LabelMe annotation workflow</b></td>
+</tr>
+<tr>
+<td><img src="images/shoe_labeling_convention.png" alt="Shoe labeling convention for x offset, distance, and orientation"></td>
+<td><img src="images/labelme_interface.png" alt="LabelMe shoe annotation workflow"></td>
+</tr>
+</table>
 
-- `data/shoe_dataset.csv` — 200 labeled rows
-- `data/sample_images/` — compressed sample frames from Scene 1 and Scene 2
-- `models/shoe_model.pth` — trained model file (42.7 MB)
-- `tools/` — scripts for LabelMe import, training, and live OAK-D inference
-
-<p align="center">
-  <img src="images/shoe_labeling_convention.png" width="650" alt="Shoe labeling convention for x offset, distance, and orientation">
-</p>
-
-<p align="center">
-  <img src="images/dataset_sample_contact_sheet.jpg" width="850" alt="Sample OAK-D dataset frames">
-</p>
-
-<p align="center">
-  <img src="images/vision_prediction_output.png" width="750" alt="Live shoe localization prediction output">
-</p>
+<table>
+<tr>
+<td width="50%" align="center"><b>Live prediction output</b></td>
+<td width="50%" align="center"><b>Sample frames</b></td>
+</tr>
+<tr>
+<td><img src="images/vision_prediction_output.png" alt="Live shoe localization prediction output"></td>
+<td><img src="images/dataset_sample_contact_sheet.jpg" alt="Sample OAK-D dataset frames"></td>
+</tr>
+</table>
 
 ---
 
@@ -85,6 +122,7 @@ assistive-follower-robot/
 ├── requirements.txt
 ├── MODEL_CARD.md
 ├── DATASET_CARD.md
+├── NOTICE.md
 ├── config/
 │   └── params.yaml
 ├── launch/
@@ -112,7 +150,11 @@ assistive-follower-robot/
 
 ---
 
-## ROS 2 Nodes
+## ROS 2 Topic Contract
+
+<p align="center">
+  <img src="images/node_graph.svg" width="850" alt="ROS 2 node and topic graph for assistive follower robot">
+</p>
 
 | Node | Purpose | Subscribes | Publishes |
 |---|---|---|---|
@@ -120,7 +162,7 @@ assistive-follower-robot/
 | `vision_angle` | Camera/model-based heading prediction | `/color/preview/image` | `/rpi_11/person_heading_deg` |
 | `sim_heading` | Fake heading publisher for testing without camera/model | none | `/rpi_11/person_heading_deg` |
 
-This cleaned package uses `std_msgs/Float32` for the perception-navigation interface so the topic contract is simple and explicit.
+This cleaned portfolio package uses `std_msgs/Float32` for the perception-navigation interface so the heading topic is simple and explicit.
 
 ---
 
@@ -141,7 +183,7 @@ cd ~/ros2_ws/src/assistive-follower-robot
 pip install -r requirements.txt
 ```
 
-### 3. Build the package
+### 3. Build the ROS 2 package
 
 ```bash
 cd ~/ros2_ws
@@ -151,17 +193,17 @@ source install/setup.bash
 
 ---
 
-## Run Options
+## Run Modes
 
-### Option A — Test navigation with simulated heading
+### Test mode — LiDAR + simulated heading
 
-Use this when you have LiDAR data but do not want to run the vision model yet.
+Use this when you have a scan topic but do not want to run the vision model yet.
 
 ```bash
 ros2 launch assistive_follower_robot follower.launch.py use_sim_heading:=true use_vision:=false
 ```
 
-### Option B — Run full follower stack
+### Full follower stack — LiDAR + OAK-D vision
 
 Use this when the robot camera, LiDAR, and model file are available.
 
@@ -169,7 +211,7 @@ Use this when the robot camera, LiDAR, and model file are available.
 ros2 launch assistive_follower_robot follower.launch.py use_sim_heading:=false use_vision:=true
 ```
 
-### Option C — Run nodes separately
+### Run nodes separately
 
 ```bash
 ros2 run assistive_follower_robot gap_follower
@@ -184,13 +226,20 @@ ros2 run assistive_follower_robot sim_heading
 ### Build CSV from LabelMe JSON annotations
 
 ```bash
-python tools/import_labelme_annotations.py   --labelme-dir /path/to/Jason_files   --output-csv data/shoe_dataset.csv   --basename-only
+python tools/import_labelme_annotations.py \
+  --labelme-dir /path/to/Jason_files \
+  --output-csv data/shoe_dataset.csv \
+  --basename-only
 ```
 
 ### Train the model
 
 ```bash
-python tools/train_shoe_regressor.py   --csv data/shoe_dataset.csv   --image-dir /path/to/full/scene2/images   --output-model models/shoe_model.pth   --epochs 100
+python tools/train_shoe_regressor.py \
+  --csv data/shoe_dataset.csv \
+  --image-dir /path/to/full/scene2/images \
+  --output-model models/shoe_model.pth \
+  --epochs 100
 ```
 
 ### Run live OAK-D inference outside ROS 2
@@ -204,12 +253,13 @@ python tools/live_oakd_predict.py --model models/shoe_model.pth
 ## Documentation
 
 - [System overview](docs/system_overview.md)
-- [Hardware](docs/hardware.md)
+- [Hardware and interface](docs/hardware.md)
 - [Data collection](docs/data_collection.md)
 - [Vision model](docs/vision_model.md)
 - [ROS 2 nodes](docs/ros2_nodes.md)
 - [Testing and validation](docs/testing.md)
 - [Portfolio scope](docs/portfolio_scope.md)
+- [Visual index](docs/visual_index.md)
 - [Model card](MODEL_CARD.md)
 - [Dataset card](DATASET_CARD.md)
 
@@ -217,6 +267,6 @@ python tools/live_oakd_predict.py --model models/shoe_model.pth
 
 ## Safety and Limitations
 
-This is a prototype research/class project, not a certified assistive mobility product. Validate the robot at low speed in a controlled environment, verify `/cmd_vel` output before enabling motion, and keep emergency stop access available during testing.
+This is a prototype research/class project, not a certified assistive mobility product. Validate the robot at low speed in a controlled environment, verify `/cmd_vel` output before enabling motion, and keep emergency-stop access available during testing.
 
-Raw Scene 1 and Scene 2 archives are not committed in full because they are hundreds of MB. The repo includes representative sample frames, label CSVs, manifests, source documents, and the trained model file.
+Raw Scene 1 and Scene 2 image archives are not committed in full because they are hundreds of MB. The repo includes representative sample frames, label CSVs, manifests, source documents, and the trained model file.

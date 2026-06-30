@@ -1,19 +1,32 @@
 # System Overview
 
-The assistive follower robot uses a TurtleBot-style mobile base with an OAK-D camera and LiDAR.
-The high-level goal is to follow a user target while avoiding obstacles in real time.
+The assistive follower robot combines perception, target heading estimation, and reactive navigation.
 
-## Pipeline
+## High-level flow
 
-1. OAK-D camera captures RGB frames.
-2. A ResNet18-style regression model estimates the shoe/user relative pose.
-3. The vision node publishes a target heading angle on `/rpi_11/person_heading_deg`.
-4. The LiDAR gap follower subscribes to `/rpi_11/scan` and the target heading.
-5. The controller selects a navigable free-space gap aligned with the target heading.
-6. Velocity commands are published to `/rpi_11/cmd_vel`.
+<p align="center">
+  <img src="../images/system_architecture.svg" width="900" alt="System architecture">
+</p>
 
-![System architecture](../images/system_architecture.svg)
+1. The OAK-D camera provides RGB image frames.
+2. A PyTorch vision node estimates the user/shoe heading cue.
+3. The heading is published as `std_msgs/Float32` on `/rpi_11/person_heading_deg`.
+4. The LiDAR node processes `/rpi_11/scan` for navigable free-space gaps.
+5. The gap follower combines safe free-space selection with target heading bias.
+6. The controller publishes `/rpi_11/cmd_vel`.
 
-## Design principle
+## ROS 2 node graph
 
-The project keeps perception and navigation modular. The perception node only publishes a heading estimate. The navigation node only needs the heading and LiDAR scan, which makes the stack easier to test and debug.
+<p align="center">
+  <img src="../images/node_graph.svg" width="850" alt="ROS 2 node graph">
+</p>
+
+## Why the interface was cleaned
+
+The original team package mixed a vision topic published as a string with a navigation subscriber expecting a path-like message. This portfolio version uses a single explicit heading topic:
+
+```text
+/rpi_11/person_heading_deg   std_msgs/Float32
+```
+
+That makes the perception-navigation contract easier to test, document, and maintain.

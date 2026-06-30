@@ -1,19 +1,27 @@
 # Data Collection
 
-The image dataset was collected with an OAK-D camera mounted on the robot at a fixed height. The data collection procedure used mapped floor positions so image location could be related to physical target location.
+The image dataset was collected with an OAK-D camera mounted on the robot at a fixed height. The floor was mapped so image locations could be related to physical shoe positions and distances.
+
+## Capture setup
+
+| OAK-D field-of-view mapping | Physical collection grid |
+|---|---|
+| <img src="../images/oakd_field_of_view_mapping.png" alt="OAK-D field-of-view mapping"> | <img src="../images/data_collection_grid.png" alt="Mapped floor grid used for image collection"> |
 
 ## Dataset coverage
 
 | Source | Included in repo | Raw archive image count |
 |---|---:|---:|
-| Scene 1 | sample frames | 232 |
-| Scene 2 | sample frames + label CSV | 232 |
+| Scene 1 | representative sample frames | 232 |
+| Scene 2 | representative sample frames + full label CSV | 232 |
 
-The raw image archives are intentionally not committed in full because they are too large for a clean GitHub portfolio repo. The included sample images and contact sheet show the dataset structure.
+The raw image archives are intentionally not committed in full because they are too large for a clean GitHub portfolio repo. The included sample images, label CSV, manifests, and source documents show the dataset structure.
 
-![OAK-D field-of-view mapping](../images/oakd_field_of_view_mapping.png)
+## Pose and distance variation
 
-![Dataset sample contact sheet](../images/dataset_sample_contact_sheet.jpg)
+| Pose diversity | Distance variation |
+|---|---|
+| <img src="../images/pose_diversity_dataset.png" alt="Shoe pose diversity examples"> | <img src="../images/distance_variation_labels.png" alt="Distance variation label examples"> |
 
 ## Label format
 
@@ -29,6 +37,12 @@ The CSV representation stores normalized values for model training:
 image, x_offset, z_distance, angle, x_offset_norm, z_distance_norm, angle_sin, angle_cos
 ```
 
-![Shoe labeling convention](../images/shoe_labeling_convention.png)
+| Label convention | LabelMe annotation workflow |
+|---|---|
+| <img src="../images/shoe_labeling_convention.png" alt="Shoe x-offset, z-distance, and angle convention"> | <img src="../images/labelme_interface.png" alt="LabelMe annotation workflow"> |
 
-![LabelMe interface](../images/labelme_interface.png)
+## Sample frames
+
+<p align="center">
+  <img src="../images/dataset_sample_contact_sheet.jpg" width="850" alt="Contact sheet of representative dataset images">
+</p>

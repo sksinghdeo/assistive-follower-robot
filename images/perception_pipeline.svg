@@ -1,0 +1,16 @@
+<svg width="1100" height="360" viewBox="0 0 1100 360" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>
+.bg{fill:#ffffff}.box{fill:#f8fafc;stroke:#0f766e;stroke-width:2;rx:16}.box2{fill:#fefce8;stroke:#ca8a04;stroke-width:2;rx:16}.box3{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:16}.txt{font:16px Arial;fill:#1f2937}.title{font:700 20px Arial;fill:#111827}.small{font:13px Arial;fill:#64748b}.arrow{stroke:#111827;stroke-width:3;marker-end:url(#m)}
+</style>
+<marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker>
+</defs>
+<rect width="1100" height="360" class="bg"/>
+<text x="40" y="44" class="title">Shoe Localization Workflow</text>
+<rect x="40" y="90" width="190" height="120" class="box"/><text x="65" y="130" class="title">OAK-D Data</text><text x="65" y="160" class="txt">mapped floor grid</text><text x="65" y="184" class="small">distance + pose diversity</text>
+<rect x="290" y="90" width="190" height="120" class="box2"/><text x="315" y="130" class="title">LabelMe</text><text x="315" y="160" class="txt">shoe bounding box</text><text x="315" y="184" class="small">x offset · z distance · angle</text>
+<rect x="540" y="90" width="190" height="120" class="box"/><text x="565" y="130" class="title">CSV Labels</text><text x="565" y="160" class="txt">normalized targets</text><text x="565" y="184" class="small">sin/cos angle encoding</text>
+<rect x="790" y="90" width="190" height="120" class="box3"/><text x="815" y="130" class="title">ResNet18</text><text x="815" y="160" class="txt">image regressor</text><text x="815" y="184" class="small">shoe_model.pth</text>
+<rect x="415" y="260" width="270" height="70" class="box3"/><text x="445" y="300" class="title">heading command for ROS 2</text>
+<line x1="230" y1="150" x2="290" y2="150" class="arrow"/><line x1="480" y1="150" x2="540" y2="150" class="arrow"/><line x1="730" y1="150" x2="790" y2="150" class="arrow"/><line x1="885" y1="210" x2="685" y2="280" class="arrow"/>
+</svg>
