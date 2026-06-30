@@ -1,17 +1,18 @@
-# Model Weights
+# Models
 
-This folder contains the trained shoe localization model used by the portfolio package.
+`shoe_model.pth` is the trained PyTorch model supplied with this portfolio repository.
 
-Included file:
+If GitHub blocks upload because of file size, either:
 
-```text
-shoe_model.pth  (42.7 MB)
+1. use Git LFS for `*.pth`, or
+2. remove `models/shoe_model.pth` from the repo and keep this folder with instructions.
+
+The model can be regenerated with:
+
+```bash
+python tools/train_shoe_regressor.py \
+  --csv data/shoe_dataset.csv \
+  --image-dir /path/to/full/scene2/images \
+  --output-model models/shoe_model.pth \
+  --epochs 100
 ```
-
-The model follows the ResNet18-style regression setup used in `tools/train_shoe_regressor.py` and predicts:
-
-```text
-[x_offset_norm, z_distance_norm, sin(theta), cos(theta)]
-```
-
-If GitHub rejects the model upload in the browser, use Git LFS or leave the file out and keep this README as the model placement guide.
