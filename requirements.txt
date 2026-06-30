@@ -1,0 +1,9 @@
+numpy>=1.22
+opencv-python>=4.5
+pandas>=1.5
+pillow>=9.0
+torch>=2.0
+torchvision>=0.15
+depthai>=2.21; platform_system != "Darwin"
+# ROS 2 packages such as rclpy, sensor_msgs, geometry_msgs, std_msgs, and cv_bridge
+# are installed through your ROS 2 distribution, not pip.
