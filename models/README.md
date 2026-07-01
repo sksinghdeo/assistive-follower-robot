@@ -1,13 +1,26 @@
 # Models
 
-`shoe_model.pth` is the trained PyTorch model supplied with this portfolio repository.
+This folder is expected to contain the trained PyTorch model weights:
 
-If GitHub blocks upload because of file size, either:
+```text
+shoe_model.pth
+```
 
-1. use Git LFS for `*.pth`, or
-2. remove `models/shoe_model.pth` from the repo and keep this folder with instructions.
+The model file is hosted externally because it exceeds GitHub browser upload limits.
 
-The model can be regenerated with:
+Download it here:
+
+[Download shoe_model.pth](https://drive.google.com/file/d/1b0rS5kiqUQPc6da0CqnZwli_7nzqFTKU/view?usp=drive_link)
+
+After downloading, place it in this folder so the final path is:
+
+```text
+models/shoe_model.pth
+```
+
+The ROS 2 vision node and standalone OAK-D inference script expect the model at this location.
+
+To regenerate the model from the labeled dataset:
 
 ```bash
 python tools/train_shoe_regressor.py \
