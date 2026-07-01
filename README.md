@@ -137,7 +137,7 @@ assistive-follower-robot/
 │   ├── live_oakd_predict.py
 │   └── make_sample_contact_sheet.py
 ├── models/
-│   └── shoe_model.pth
+│   └── shoe_model.pth  # download separately from Google Drive
 ├── data/
 │   ├── shoe_dataset.csv
 │   ├── sample_dataset.csv
@@ -190,6 +190,24 @@ cd ~/ros2_ws
 colcon build --packages-select assistive_follower_robot
 source install/setup.bash
 ```
+
+---
+
+## Model Weights
+
+The trained PyTorch model file is not committed directly to this repository because it exceeds GitHub browser upload limits.
+
+Download the trained model here:
+
+[Download shoe_model.pth](https://drive.google.com/file/d/1b0rS5kiqUQPc6da0CqnZwli_7nzqFTKU/view?usp=drive_link)
+
+After downloading, place it at:
+
+```text
+models/shoe_model.pth
+```
+
+The ROS 2 vision node and standalone OAK-D inference script expect the model at this location.
 
 ---
 
@@ -269,4 +287,4 @@ python tools/live_oakd_predict.py --model models/shoe_model.pth
 
 This is a prototype research/class project, not a certified assistive mobility product. Validate the robot at low speed in a controlled environment, verify `/cmd_vel` output before enabling motion, and keep emergency-stop access available during testing.
 
-Raw Scene 1 and Scene 2 image archives are not committed in full because they are hundreds of MB. The repo includes representative sample frames, label CSVs, manifests, source documents, and the trained model file.
+Raw Scene 1 and Scene 2 image archives are not committed in full because they are hundreds of MB. The repo includes representative sample frames, label CSVs, manifests, source documents, and external download instructions for the trained model file.
